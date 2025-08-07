@@ -140,32 +140,25 @@ model.add(MaxPooling2D(pool_size=(2,2)))
 model.add(Conv2D(32, (3, 3), activation='relu'))  # 64 yerine 32
 model.add(MaxPooling2D(pool_size=(2, 2)))
 
-# Flatten: 2B veriyi düzleştirip dense katmanlara hazırlıyoruz
 model.add(Flatten())
-
-# Tam bağlantılı (dense) katman: 64 nöronlu (128 yerine)
 model.add(Dense(64, activation='relu'))
-
-# Overfitting'i azaltmak için Dropout uyguluyoruz (%50)
 model.add(Dropout(0.5))
-
-# Çıkış katmanı: Sınıf sayısı kadar nöron, softmax ile sınıf olasılıkları
 model.add(Dense(num_classes, activation='softmax'))
 
 # Modeli derliyoruz: kayıp fonksiyonu, optimizer ve metriği belirtiyoruz
 model.compile(
-    loss='categorical_crossentropy',  # Çok sınıflı sınıflandırmalarda kullanılır
-    optimizer=Adam(learning_rate=0.001),  # Öğrenme oranını düşürdük
-    metrics=['accuracy']  # Doğruluk oranını takip ediyoruz
+    loss='categorical_crossentropy', 
+    optimizer=Adam(learning_rate=0.001),  
+    metrics=['accuracy'] 
 )
 
-# Modeli eğitiyoruz - daha küçük batch size
+# Modeli eğitiyoruz 
 history = model.fit(
-    X_train, y_train,             # Eğitim verileri
-    validation_split=0.1,         # %10'unu validasyon için ayır
-    epochs=50,                    # 30 kez tüm veriyi dolaşacak
-    batch_size=8,                 # 16 yerine 8 - daha az bellek kullanımı
-    verbose=1                     # Eğitim sürecini ekrana yazdır
+    X_train, y_train,             
+    validation_split=0.1,         
+    epochs=50,                   
+    batch_size=8,                 
+    verbose=1                    
 )
 # Test verisiyle başarı oranını ölçüyoruz
 test_loss, test_acc = model.evaluate(X_test, y_test)
